@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_state.dart';
@@ -15,9 +16,7 @@ class CounterCubit extends Cubit<CounterState> {
   }
 
   void reset() {
-    emit( CounterState(
-      counter: state.counter
-    ).copyWith(
+    emit( CounterState().copyWith(
       counter: 0,
     ));
   }

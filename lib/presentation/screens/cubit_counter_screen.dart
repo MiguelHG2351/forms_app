@@ -27,16 +27,23 @@ class _CubicCounterView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cubit Counter: ${counterState.counter}'),
+        title: context.select((CounterCubit value) {
+          return Text('Cubit Counter: ${value.state.transactionCount}');
+        },),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh_outlined))
+          IconButton(
+            onPressed: () {
+              context.read<CounterCubit>().reset();
+            }, 
+            icon: const Icon(Icons.refresh_outlined))
         ],
       ),
       body: Center(
         child: BlocBuilder<CounterCubit, CounterState>(
           // buildWhen: (previous, current) => current.counter != previous.counter,
           builder: (context, state) {
-            return Text('Counter value: ${state.counter}');
+            print('Counter cambio');
+            return Text('Counter value: ${state.transactionCount}');
           },
         ),
       ),
@@ -44,7 +51,9 @@ class _CubicCounterView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<CounterCubit>().increaseBy(3);
+            },
             heroTag: '1',
             child: const Text('+3'),
           ),
@@ -52,7 +61,9 @@ class _CubicCounterView extends StatelessWidget {
             height: 15,
           ),
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<CounterCubit>().increaseBy(2);
+            },
             heroTag: '2',
             child: const Text('+2'),
           ),
@@ -60,7 +71,9 @@ class _CubicCounterView extends StatelessWidget {
             height: 15,
           ),
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<CounterCubit>().increaseBy(1);
+            },
             heroTag: '3',
             child: const Text('+1'),
           ),
