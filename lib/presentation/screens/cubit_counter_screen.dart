@@ -1,37 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/presentation/blocs/cubit/counter_cubit.dart';
 
 class CubitCounterScreen extends StatelessWidget {
   const CubitCounterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (_) {
+          return CounterCubit();
+        },
+        child: _CubicCounterView());
+  }
+}
+
+class _CubicCounterView extends StatelessWidget {
+  const _CubicCounterView({
+    super.key,
+  });
+
+
+  @override
+  Widget build(BuildContext context) {
+    final counterState = context.watch<CounterCubit>().state;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cubit Counter'),
+        title: Text('Cubit Counter: ${counterState.counter}'),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.refresh_outlined))
         ],
       ),
-      body: const Center(
-        child: Text('Counter value: xxxxx'),
+      body: Center(
+        child: BlocBuilder<CounterCubit, CounterState>(
+          // buildWhen: (previous, current) => current.counter != previous.counter,
+          builder: (context, state) {
+            return Text('Counter value: ${state.counter}');
+          },
+        ),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {}, 
+            onPressed: () {},
             heroTag: '1',
             child: const Text('+3'),
           ),
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 15,
+          ),
           FloatingActionButton(
-            onPressed: () {}, 
+            onPressed: () {},
             heroTag: '2',
             child: const Text('+2'),
           ),
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 15,
+          ),
           FloatingActionButton(
-            onPressed: () {}, 
+            onPressed: () {},
             heroTag: '3',
             child: const Text('+1'),
           ),
